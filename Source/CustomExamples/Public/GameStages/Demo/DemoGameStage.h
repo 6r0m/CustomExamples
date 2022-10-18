@@ -10,7 +10,7 @@
 #include "DemoGameStage.generated.h"
 
 /**
- * 
+ * Stage for example.
  */
 UCLASS()
 class CUSTOMEXAMPLES_API UDemoGameStage : public UGameStage

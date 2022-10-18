@@ -3,3 +3,7 @@
 
 #include "GameStages/Core/System/GameStagesManager.h"
 
+void UGameStagesManager::NextStage()
+{
+	// Todo
+}

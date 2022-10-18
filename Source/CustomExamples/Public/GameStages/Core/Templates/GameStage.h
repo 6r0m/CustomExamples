@@ -7,7 +7,7 @@
 #include "GameStage.generated.h"
 
 /**
- * Base class for derived game stages
+ * Base class for derived game stages.
  */
 UCLASS(Abstract)
 class UGameStage : public UObject
