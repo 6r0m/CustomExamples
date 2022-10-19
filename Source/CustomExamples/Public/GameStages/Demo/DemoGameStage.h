@@ -12,7 +12,7 @@
 /**
  * Stage for example.
  */
-UCLASS()
+UCLASS(Blueprintable)
 class CUSTOMEXAMPLES_API UDemoGameStage : public UGameStage
 {
 	GENERATED_BODY()

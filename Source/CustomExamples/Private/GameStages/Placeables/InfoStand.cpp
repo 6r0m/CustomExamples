@@ -23,8 +23,7 @@ void AInfoStand::BeginPlay()
 
 void AInfoStand::Init()
 {
-	InfoWidget = WidgetComponent->GetUserWidgetObject();
-	if (!InfoWidget)
+	if (!WidgetComponent->GetUserWidgetObject())
 	{
 		UE_LOG(LogCustomExample, Error, TEXT("%s -- Widget isn't Valid!"), *FString(__FUNCTION__));
 		return;

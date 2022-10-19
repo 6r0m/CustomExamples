@@ -24,28 +24,23 @@ public:
 	// Sets default values for this actor's properties
 	AInfoStand();
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Info Stand")
+	UFUNCTION(BlueprintImplementableEvent, Category = "GameStages|Info Stand")
 	void SetTextSize(const uint8& TextSize);
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Info Stand")
+	UFUNCTION(BlueprintImplementableEvent, Category = "GameStages|Info Stand")
 	void SetInfo(const FText& Info);
-
-	
-	
+		
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Info Stand")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameStages|Info Stand")
 	UWidgetComponent* WidgetComponent;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Info Stand")
-	UUserWidget* InfoWidget;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Info Stand")
+	UPROPERTY(EditDefaultsOnly, Category = "GameStages|Info Stand")
 	FText DefaultWidgetText = FText::FromString("Default Widget Text");
 
-	UPROPERTY(EditDefaultsOnly, Category = "Info Stand")
+	UPROPERTY(EditDefaultsOnly, Category = "GameStages|Info Stand")
 	uint8 WidgetTextSize = 52;
 	
 private:
