@@ -6,4 +6,6 @@
 void UGameStage::FinishStage()
 {
 	OnStageFinished.ExecuteIfBound();
+
+	// if this stage no needed anymore - to force GC use ConditionalBeginDestroy() on this
 }
