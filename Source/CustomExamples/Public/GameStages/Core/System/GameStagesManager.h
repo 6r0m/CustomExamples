@@ -12,7 +12,7 @@
 /**
  * Manager controls game stages.
  */
-UCLASS()
+UCLASS(Abstract, Blueprintable)
 class UGameStagesManager : public UObject
 {
 	GENERATED_BODY()
@@ -21,8 +21,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GameStages")
 	void NextStage();
 
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "GameStages")
+	TArray<TSubclassOf<UGameStage>> GameStages;
+
 private:
+	
+	void StageFinished();
+
 	uint8 IdCurrentStage = 0;
 
-	TSubclassOf<UGameStage> GameStages;
+	UPROPERTY()
+	UGameStage* CurrentGameStage;
 };
