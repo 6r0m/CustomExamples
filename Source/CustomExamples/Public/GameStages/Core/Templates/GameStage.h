@@ -16,10 +16,16 @@ class UGameStage : public UObject
 {
 	GENERATED_BODY()
 	
-public:
+public:	
+	virtual void PostInitProperties() override;
+
 	FOnStageFinished_Signature OnStageFinished;
 
 protected:
 	UFUNCTION(BlueprintCallable, Category = "GameStages|Stage", meta = (BlueprintProtected = "true"))
 	void FinishStage();	
+
+	UFUNCTION(BlueprintNativeEvent, Category = "GameStages|Stage", meta = (BlueprintProtected = "true"))
+	void StageBeginPlay();
+	virtual void StageBeginPlay_Implementation();
 };
