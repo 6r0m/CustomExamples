@@ -10,11 +10,19 @@
 #include "DemoGameStage.generated.h"
 
 /**
- * Stage for example.
+ * Stage for example. It uses time for its lifetime maintenance.
  */
 UCLASS(Blueprintable)
 class CUSTOMEXAMPLES_API UDemoGameStage : public UGameStage
 {
 	GENERATED_BODY()
 	
+protected:	
+	virtual void StageBeginPlay_Implementation() override;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "GameStages|Stage")
+	float AutoFinishTime = 0.f;
+
+private:
+	void AutoFinish();
 };
