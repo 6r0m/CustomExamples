@@ -28,4 +28,18 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category = "GameStages|Stage", meta = (BlueprintProtected = "true"))
 	void StageBeginPlay();
 	virtual void StageBeginPlay_Implementation();
+	
+	const virtual AActor* GetStageActor();
+
+	UWorld* StageWorld;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameStages|Stage", meta = (BlueprintProtected = "true"))
+	TSubclassOf<AActor> StageActorClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameStages|Stage", meta = (BlueprintProtected = "true"))
+	FName StageActorTag;
+
+private:
+	// Target Actor is the main actor (with the StageActorInterface) on whose state this stage depends.
+	AActor* StageActor;
 };
