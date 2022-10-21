@@ -6,18 +6,28 @@
 
 void UDemoGameStage::StageBeginPlay_Implementation()
 {
-	// set timer for auto finishing
+	Super::StageBeginPlay_Implementation();
+	
+	// Timer for auto finishing
 	if (AutoFinishTime != 0 && GEngine) 
 	{
 		FTimerHandle TimerHandle;		
-		if (UWorld* World = GEngine->GetWorldFromContextObject(this))
+		if (StageWorld)
 		{
-			World->GetTimerManager().SetTimer(TimerHandle, this, &UDemoGameStage::AutoFinish, AutoFinishTime);
+			StageWorld->GetTimerManager().SetTimer(TimerHandle, this, &UDemoGameStage::AutoFinish, AutoFinishTime);
 		}		
 	}
 }
 
+void UDemoGameStage::FinishStage()
+{
+	// clear timer in case if stage was finished e.g. by StageActor
+	FinishTimer.Invalidate();
+
+	Super::FinishStage();
+}
+
 void UDemoGameStage::AutoFinish()
 {
-	FinishStage();
+	Super::FinishStage();
 }

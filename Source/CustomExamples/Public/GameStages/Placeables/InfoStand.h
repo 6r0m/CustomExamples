@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-
 #include "UMG/Public/Blueprint/UserWidget.h"
 #include "UMG/Public/Components/WidgetComponent.h"
 #include "Internationalization/Text.h"
@@ -36,9 +35,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameStages|Info Stand")
 	UWidgetComponent* WidgetComponent;
-
-	UPROPERTY(EditDefaultsOnly, Category = "GameStages|Info Stand")
-	FText DefaultWidgetText = FText::FromString("Default Widget Text");
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameStages|Info Stand")
 	uint8 WidgetTextSize = 52;
