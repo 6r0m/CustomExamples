@@ -30,6 +30,5 @@ void AInfoStand::Init()
 	}	
 
 	SetTextSize(WidgetTextSize);
-	SetInfo(DefaultWidgetText);
 }
 

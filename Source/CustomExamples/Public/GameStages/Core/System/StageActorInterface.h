@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "Engine/EngineTypes.h"
 
+#include "GameStages/Core/Templates/GameStage.h"
+
 #include "StageActorInterface.generated.h"
 
 UINTERFACE(Category = "GameStages", BlueprintType, meta = (DisplayName = "Stage Actor Interface"))
@@ -20,6 +22,6 @@ class CUSTOMEXAMPLES_API IStageActorInterface
 
 public:		
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "GameStages")
-	void Activate();
+	void Activate(const UGameStage* OwnerStage);
 };
 

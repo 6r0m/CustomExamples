@@ -2,6 +2,7 @@
 
 
 #include "GameStages/Core/Templates/GameStage.h"
+#include "GameStages/Placeables/InfoStand.h"
 #include "GameStages/Core/System/StageActorInterface.h"
 
 #include "EngineUtils.h"
@@ -16,21 +17,44 @@ void UGameStage::PostInitProperties()
 	}
 }	
 
+void UGameStage::Activate()
+{
+	// Activate Stage Actor
+	if (GetStageActor() && StageActor->GetClass()->ImplementsInterface(UStageActorInterface::StaticClass()))
+	{
+		IStageActorInterface::Execute_Activate(StageActor, this);
+	}
+	
+	// Show Marker
+		// here could be some spawn fx realization on stage actor position with self-destroy on pawn overlap
+}
+
+void UGameStage::Activate(AInfoStand* InfoStand)
+{
+	Activate();
+
+	// Show Hint
+	if (InfoStand && !StageHint.IsEmpty()) 
+	{		
+		InfoStand->SetInfo(StageHint);
+	}
+}
+
+void UGameStage::RequestFinishStage()
+{
+	FinishStage();
+}
+
+void UGameStage::StageBeginPlay_Implementation()
+{	
+	StageWorld = GEngine->GetWorldFromContextObject(this, EGetWorldErrorMode::LogAndReturnNull);
+}
+
 void UGameStage::FinishStage()
 {
 	OnStageFinished.ExecuteIfBound();
 
-	// if this stage no needed anymore - to force GC use ConditionalBeginDestroy() on this
-}
-
-void UGameStage::StageBeginPlay_Implementation()
-{
-	// reserved for a base cpp Stage Logic that can be ovverriden in derived classes
-	UE_LOG(LogCustomExample, Display, TEXT("%s -- Stage Begin Play"), *FString(__FUNCTION__));
-
-	StageWorld = GEngine->GetWorldFromContextObject(this, EGetWorldErrorMode::LogAndReturnNull);
-
-	UE_LOG(LogCustomExample, Display, TEXT("%s -- Stage Actor : %s"), *FString(__FUNCTION__), *FString(GetStageActor()->GetName()));
+	// if the stage no needed anymore - to force GC use ConditionalBeginDestroy() on this
 }
 
 const AActor* UGameStage::GetStageActor()
@@ -40,7 +64,7 @@ const AActor* UGameStage::GetStageActor()
 		return StageActor;
 	}
 
-	// find the target actor by provided tag and class in blueprint's defaults
+	// Find the target actor by provided tag and class in blueprint's defaults
 	if (StageActorClass && StageWorld)
 	{
 		for (TActorIterator<AActor> It(StageWorld, StageActorClass); It; ++It)
@@ -58,4 +82,9 @@ const AActor* UGameStage::GetStageActor()
 	}
 
 	return nullptr;
+}
+
+void UGameStage::ShowHint()
+{
+	//StageHint.IsEmpty();
 }

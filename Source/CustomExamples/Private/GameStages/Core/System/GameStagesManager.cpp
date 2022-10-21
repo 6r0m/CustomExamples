@@ -2,6 +2,29 @@
 
 
 #include "GameStages/Core/System/GameStagesManager.h"
+#include "GameStages/Core/Templates/GameStage.h"
+#include "GameStages/Placeables/InfoStand.h"
+
+#include "EngineUtils.h"
+
+void UGameStagesManager::PostInitProperties()
+{
+	Super::PostInitProperties();
+	
+	// Init Info Stand in the most universal way
+	if (FApp::IsGame())
+	{		
+		UWorld* World = GEngine->GetWorldFromContextObject(this, EGetWorldErrorMode::LogAndReturnNull);
+		if (World)
+		{
+			for (TActorIterator<AInfoStand> It(World, AInfoStand::StaticClass()); It; ++It)
+			{
+				InfoStand = *It;
+				break;				
+			}
+		}
+	}
+}
 
 void UGameStagesManager::NextStage()
 {
@@ -19,7 +42,8 @@ void UGameStagesManager::NextStage()
 	
 	UClass* CurrentStageClass = GameStages[IdCurrentStage];
 
-	CurrentGameStage = NewObject<UGameStage>(this, CurrentStageClass);
+	CurrentGameStage = NewObject<UGameStage>(this, CurrentStageClass);	
+	CurrentGameStage->Activate(InfoStand);
 	CurrentGameStage->OnStageFinished.BindUObject(this, &UGameStagesManager::StageFinished);
 	
 	IdCurrentStage++;

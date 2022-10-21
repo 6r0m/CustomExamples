@@ -8,7 +8,7 @@ void UDemoGameStage::StageBeginPlay_Implementation()
 {
 	Super::StageBeginPlay_Implementation();
 	
-	// set timer for auto finishing
+	// Timer for auto finishing
 	if (AutoFinishTime != 0 && GEngine) 
 	{
 		FTimerHandle TimerHandle;		
@@ -19,7 +19,15 @@ void UDemoGameStage::StageBeginPlay_Implementation()
 	}
 }
 
+void UDemoGameStage::FinishStage()
+{
+	// clear timer in case if stage was finished e.g. by StageActor
+	FinishTimer.Invalidate();
+
+	Super::FinishStage();
+}
+
 void UDemoGameStage::AutoFinish()
 {
-	FinishStage();
+	Super::FinishStage();
 }
