@@ -3,13 +3,15 @@
 #include "Manipulator/Core/Templates/RoboManipulator.h"
 #include "Manipulator/Core/Templates/RotatingMesh.h"
 
-#define GetMeshWithName(name) #name, name
+#define GetMeshWithName(name) #name, &name
 
 ARoboManipulator::ARoboManipulator()
 {
  	PrimaryActorTick.bCanEverTick = false;
 
 	CreateRotatingMeshes({{ GetMeshWithName(BaseMesh) }, { GetMeshWithName(UpperArm) }, { GetMeshWithName(ForeArm) }});
+
+	//TestMeshCreation( GetMeshWithName(BaseMesh) );
 }
 
 void ARoboManipulator::BeginPlay()
@@ -18,7 +20,7 @@ void ARoboManipulator::BeginPlay()
 	
 }
 
-void ARoboManipulator::CreateRotatingMeshes(TMap<FString, URotatingMesh*> MeshesWithName)
+void ARoboManipulator::CreateRotatingMeshes(TMap<FString, URotatingMeshComponent**> MeshesWithName)
 {
 	if (MeshesWithName.Num() == 0)
 	{
@@ -26,20 +28,22 @@ void ARoboManipulator::CreateRotatingMeshes(TMap<FString, URotatingMesh*> Meshes
 		return;
 	}
 
-	URotatingMesh* PreviousMesh = nullptr;
-	for (TPair<FString, URotatingMesh*>& CurrentMesh : MeshesWithName)
+	URotatingMeshComponent* PreviousMesh = nullptr;	
+	for (TPair<FString, URotatingMeshComponent**> CurrentMesh : MeshesWithName)
 	{
-		CurrentMesh.Value = CreateDefaultSubobject<URotatingMesh>(*CurrentMesh.Key);
-		
+		*CurrentMesh.Value = CreateDefaultSubobject<URotatingMeshComponent>(*CurrentMesh.Key);
+
+		// attach hierarchically
 		if (!PreviousMesh)
 		{
-			CurrentMesh.Value->SetupAttachment(this->GetRootComponent());			
+			(*CurrentMesh.Value)->SetupAttachment(this->GetRootComponent());						
 		} 
 		else
 		{
-			CurrentMesh.Value->SetupAttachment(PreviousMesh);
+			(*CurrentMesh.Value)->SetupAttachment(PreviousMesh);
 		}		
-		PreviousMesh = CurrentMesh.Value;
+		
+		PreviousMesh = *CurrentMesh.Value;
 	}
 }
 

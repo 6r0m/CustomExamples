@@ -6,33 +6,37 @@
 #include "GameFramework/Actor.h"
 #include "RoboManipulator.generated.h"
 
-class URotatingMesh;
+class URotatingMeshComponent;
 
-UCLASS()
+// test
+class UStaticMesh;
+
+UCLASS(Blueprintable)
 class CUSTOMEXAMPLES_API ARoboManipulator : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
+public:		
 	ARoboManipulator();
 
-	UPROPERTY(EditDefaultsOnly, Category = "Manipulator")
-	URotatingMesh* BaseMesh;
+	UPROPERTY(EditAnywhere, Category = "Manipulator")
+	URotatingMeshComponent* BaseMesh;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Manipulator")
-	URotatingMesh* UpperArm;
+	UPROPERTY(EditAnywhere, Category = "Manipulator")
+	URotatingMeshComponent* UpperArm;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Manipulator")
-	URotatingMesh* ForeArm;
+	UPROPERTY(EditAnywhere, Category = "Manipulator")
+	URotatingMeshComponent* ForeArm;
+
+	// test
+	UPROPERTY(EditAnywhere, Category = "Manipulator")
+	URotatingMeshComponent* TestMesh;
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-
-	void CreateRotatingMeshes(TMap<FString, URotatingMesh*> MeshesWithName);
-
-
+	
+	// modify the variables itself instead of the object
+	void CreateRotatingMeshes(TMap<FString, URotatingMeshComponent**> MeshesWithName);
 };

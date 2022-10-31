@@ -9,9 +9,11 @@
 /**
  * 
  */
-UCLASS()
-class CUSTOMEXAMPLES_API URotatingMesh : public UStaticMeshComponent
+UCLASS(Blueprintable)
+class CUSTOMEXAMPLES_API URotatingMeshComponent : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 	
+public:
+	~URotatingMeshComponent();
 };

@@ -3,3 +3,7 @@
 
 #include "Manipulator/Core/Templates/RotatingMesh.h"
 
+URotatingMeshComponent::~URotatingMeshComponent()
+{
+
+}
