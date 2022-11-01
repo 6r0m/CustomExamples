@@ -8,9 +8,6 @@
 
 class URotatingMeshComponent;
 
-// test
-class UStaticMesh;
-
 UCLASS(Blueprintable)
 class CUSTOMEXAMPLES_API ARoboManipulator : public AActor
 {
@@ -20,23 +17,22 @@ public:
 	ARoboManipulator();
 
 	UPROPERTY(EditAnywhere, Category = "Manipulator")
+	USceneComponent* Root;
+
+	UPROPERTY(EditAnywhere, Category = "Manipulator")
 	URotatingMeshComponent* BaseMesh;
 	
-	UPROPERTY(EditAnywhere, Category = "Manipulator")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Manipulator")
 	URotatingMeshComponent* UpperArm;
 
-	UPROPERTY(EditAnywhere, Category = "Manipulator")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Manipulator")
 	URotatingMeshComponent* ForeArm;
-
-	// test
-	UPROPERTY(EditAnywhere, Category = "Manipulator")
-	URotatingMeshComponent* TestMesh;
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
 	
-	// modify the variables itself instead of the object
+	// Mesh components creation with modifying the variables itself instead of the objects
 	void CreateRotatingMeshes(TMap<FString, URotatingMeshComponent**> MeshesWithName);
 };

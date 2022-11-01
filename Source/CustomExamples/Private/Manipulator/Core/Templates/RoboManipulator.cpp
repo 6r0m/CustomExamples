@@ -9,9 +9,10 @@ ARoboManipulator::ARoboManipulator()
 {
  	PrimaryActorTick.bCanEverTick = false;
 
-	CreateRotatingMeshes({{ GetMeshWithName(BaseMesh) }, { GetMeshWithName(UpperArm) }, { GetMeshWithName(ForeArm) }});
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	if (Root) SetRootComponent(Root);
 
-	//TestMeshCreation( GetMeshWithName(BaseMesh) );
+	CreateRotatingMeshes({{ GetMeshWithName(BaseMesh) }, { GetMeshWithName(UpperArm) }, { GetMeshWithName(ForeArm) }});
 }
 
 void ARoboManipulator::BeginPlay()
