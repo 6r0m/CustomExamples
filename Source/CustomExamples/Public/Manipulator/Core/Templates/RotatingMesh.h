@@ -7,7 +7,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "RotatingMesh.generated.h"
 
-DECLARE_DELEGATE(FOnRotationFinished);
+//DECLARE_DELEGATE(FOnRotationFinished);
+DECLARE_DELEGATE_OneParam(FOnRotationFinished, const UObject*);
 
 /** Mesh component with rotation animation. */
 UCLASS(Blueprintable)
@@ -22,7 +23,7 @@ public:
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 	
 	UFUNCTION(BlueprintCallable, Category = "Manipulator|RotatingMesh")
-	void Rotate(const FRotator& InTargetRotation);
+	void Rotate(const FRotator& InTargetRotation, bool bFromStart = true);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Manipulator|RotatingMesh")
 	float AnimRate = 1.0;

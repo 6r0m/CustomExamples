@@ -49,12 +49,19 @@ void URotatingMeshComponent::InitTimeline()
 	Timeline.SetTimelineFinishedFunc(OnTimelineFinished);
 }
 
-void URotatingMeshComponent::Rotate(const FRotator& InTargetRotation)
+void URotatingMeshComponent::Rotate(const FRotator& InTargetRotation, bool bFromStart /*= true*/)
 {
 	InitialRotation = GetRelativeRotation();
 	TargetRotation = InTargetRotation;
 
-	Timeline.PlayFromStart();
+	if (bFromStart)
+	{
+		Timeline.PlayFromStart();
+	} 
+	else
+	{
+		Timeline.ReverseFromEnd();
+	}	
 }
 
 void URotatingMeshComponent::Rotating(const float Value)
@@ -65,8 +72,5 @@ void URotatingMeshComponent::Rotating(const float Value)
 
 void URotatingMeshComponent::RotatingFinished()
 {
-	OnRotationFinished.ExecuteIfBound();
-
-	//test
-	UE_LOG(LogCustomExample, Warning, TEXT("%s -- RotatingFinished."), *FString(__FUNCTION__));
+	OnRotationFinished.ExecuteIfBound(this);
 }
