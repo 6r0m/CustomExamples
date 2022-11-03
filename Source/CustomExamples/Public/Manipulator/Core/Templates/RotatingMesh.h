@@ -23,26 +23,29 @@ public:
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 	
 	UFUNCTION(BlueprintCallable, Category = "Manipulator|RotatingMesh")
-	void Rotate(const FRotator& InTargetRotation, bool bFromStart = true);
-
+	void Rotate(const FRotator& InTargetRotation);
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Manipulator|RotatingMesh")
-	float AnimRate = 1.0;
+	float AnimRate = 1.0f;
+
+	UFUNCTION(BlueprintCallable, Category = "Manipulator|RotatingMesh")
+	void ReverseLastRotation();
 
 	FOnRotationFinished OnRotationFinished;
 
+
 private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Manipulator|RotatingMesh", meta = (AllowPrivateAccess = "true"))
+	UCurveFloat* AnimCurve;
+	
 	void InitConstruction();
 	void InitTimeline();
+	FTimeline Timeline;
 
 	UFUNCTION()
 	void Rotating(const float Value);
-	void RotatingFinished();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Manipulator|RotatingMesh", meta = (AllowPrivateAccess = "true"))
-	UCurveFloat* AnimCurve;
-
-	FTimeline Timeline; 
 
 	FRotator InitialRotation;
 	FRotator TargetRotation;
+	void RotatingFinished();	
 };

@@ -9,9 +9,11 @@
 enum EManipulatorState
 {	
 	Idle = 0,
-	Grab = 1,
-	Turn = 2,
-	Drop = 3,
+	TurnPackage = 1,	
+	Grab = 2,	
+	TurnTarget = 3,
+	Drop = 4,
+	TurnIdle = 5,
 };
 
 class URotatingMeshComponent;
@@ -24,42 +26,54 @@ class CUSTOMEXAMPLES_API ARoboManipulator : public AActor
 public:		
 	ARoboManipulator();
 
+protected:
+	virtual void BeginPlay() override;
+
+public:
 	UFUNCTION(BlueprintCallable, Category = "Manipulator")
 	void ManipulatePackage();
 
 	UPROPERTY(EditAnywhere, Category = "Manipulator")
 	USceneComponent* Root;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Manipulator")
-	URotatingMeshComponent* BaseMesh;
+	URotatingMeshComponent* BaseMesh;	
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Manipulator")
 	URotatingMeshComponent* UpperArm;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Manipulator")
 	URotatingMeshComponent* ForeArm;
 
-protected:
-	virtual void BeginPlay() override;
-
 private:
-	
+	// Choose package in the derived BP from scene
+	UPROPERTY(EditAnywhere, Category = "Manipulator")
+	AActor* Package;
+	// Choose target location of the package in the derived BP
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Manipulator", meta = (MakeEditWidget, AllowPrivateAccess = "true"))
+	FVector PackageTargetLocation;
+
 	// Mesh components creation with modifying the variables itself instead of the objects
 	void CreateRotatingMeshes(TMap<FString, URotatingMeshComponent**> MeshesWithName);
+	
 	void MeshRotationFinished(const UObject* Mesh);
+	bool bArmAnimFinished = false;
 
-	void Turn(const FVector& TargetLocation);
-	const float CalculateTurnAngle(FVector TargetLocation);
-		
-	//void Drop();
-	//void Idle();
-
+	void NextAction(const EManipulatorState NextState);
 	EManipulatorState ManipulatorState = EManipulatorState::Idle;
 
-	// Choose package in the derived BP from scene
-	UPROPERTY(EditAnywhere, Category = "Robo Manipulator")
-	AActor* Package;	
+	void Turn(const FVector& TargetLocation, bool bShortDistance = true);
+	const float CalculateTurnAngle(FVector TargetLocation, bool bShortDistance) const;
 	
-	bool bPackageHandled = false;
-	bool bArmAnimFinished = false;
+	void StartGrabbing();
+	void FinishGrabbing();
+	void StartDropping();
+	void FinishDropping();
+
+	const FRotator CalculateSegmentRotation(const float& DistanceToObject, bool bUpperArm) const;
+	float UpperArmLength, ForeArmLength;
+	const float GetSegmentLength(const UStaticMeshComponent* InMesh, bool bFromPivot = true) const;
+
+	void RepeatPackageManipulation();	
+	FTimerHandle RepeatTimerHandle;
 };

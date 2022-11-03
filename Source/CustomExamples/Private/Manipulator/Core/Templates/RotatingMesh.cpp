@@ -1,5 +1,6 @@
 // 6r0m, MIT liscence
 
+#include "Kismet/KismetMathLibrary.h"
 
 #include "Manipulator/Core/Templates/RotatingMesh.h"
 
@@ -49,19 +50,17 @@ void URotatingMeshComponent::InitTimeline()
 	Timeline.SetTimelineFinishedFunc(OnTimelineFinished);
 }
 
-void URotatingMeshComponent::Rotate(const FRotator& InTargetRotation, bool bFromStart /*= true*/)
+void URotatingMeshComponent::Rotate(const FRotator& InTargetRotation)
 {
 	InitialRotation = GetRelativeRotation();
 	TargetRotation = InTargetRotation;
+		
+	Timeline.PlayFromStart();	
+}
 
-	if (bFromStart)
-	{
-		Timeline.PlayFromStart();
-	} 
-	else
-	{
-		Timeline.ReverseFromEnd();
-	}	
+void URotatingMeshComponent::ReverseLastRotation()
+{
+	Timeline.ReverseFromEnd();
 }
 
 void URotatingMeshComponent::Rotating(const float Value)
