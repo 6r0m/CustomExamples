@@ -33,7 +33,6 @@ public:
 
 	FOnRotationFinished OnRotationFinished;
 
-
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Manipulator|RotatingMesh", meta = (AllowPrivateAccess = "true"))
 	UCurveFloat* AnimCurve;
