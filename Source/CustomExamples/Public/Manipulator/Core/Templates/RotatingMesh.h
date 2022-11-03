@@ -7,7 +7,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "RotatingMesh.generated.h"
 
-DECLARE_DELEGATE(FOnRotationFinished);
+//DECLARE_DELEGATE(FOnRotationFinished);
+DECLARE_DELEGATE_OneParam(FOnRotationFinished, const UObject*);
 
 /** Mesh component with rotation animation. */
 UCLASS(Blueprintable)
@@ -23,25 +24,28 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Manipulator|RotatingMesh")
 	void Rotate(const FRotator& InTargetRotation);
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Manipulator|RotatingMesh")
-	float AnimRate = 1.0;
+	float AnimRate = 1.0f;
+
+	UFUNCTION(BlueprintCallable, Category = "Manipulator|RotatingMesh")
+	void ReverseLastRotation();
 
 	FOnRotationFinished OnRotationFinished;
 
+
 private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Manipulator|RotatingMesh", meta = (AllowPrivateAccess = "true"))
+	UCurveFloat* AnimCurve;
+	
 	void InitConstruction();
 	void InitTimeline();
+	FTimeline Timeline;
 
 	UFUNCTION()
 	void Rotating(const float Value);
-	void RotatingFinished();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Manipulator|RotatingMesh", meta = (AllowPrivateAccess = "true"))
-	UCurveFloat* AnimCurve;
-
-	FTimeline Timeline; 
 
 	FRotator InitialRotation;
 	FRotator TargetRotation;
+	void RotatingFinished();	
 };
